@@ -1,0 +1,12 @@
+// tsconfig.js when using webpack is much simpler.
+{
+  // How will ts be compiled.
+  "compilerOptions": {
+    "noImplicitAny": true, // Disallows a value having any type.
+    "target": "es6", // will be transpiling to es5 in prod.
+    "module": "es6", // import kept in es6, as runs in browser. Also helps tree shaking.
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true
+  }
+}
