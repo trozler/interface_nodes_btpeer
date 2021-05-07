@@ -8,6 +8,25 @@
   <title>Document</title>
 </head>
 <body>
+
+  <h1>Upload Image</h1>
+
+  <div id="container">
+    <form action="/upload" method="post" id="form-upload">
+      <div class="form-element">
+        <label for="emai">email:</label>
+        <input type="email" name="email" id="">
+      </div>
+      <div class="form-element">
+        <input type="file" name="photo">
+      </div>
+      <div class="form-element">
+        <input type="submit" value="upload">
+      </div>
+    </form>
+  </div>
   
 </body>
+<script src="/upload.js"></script>
+<script src="/main.js"></script>
 </html>

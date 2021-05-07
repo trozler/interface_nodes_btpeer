@@ -11,7 +11,7 @@ module.exports = {
 
   // output bundles (location)
   output: {
-    path: path.resolve(__dirname, "dist/js"),
+    path: path.resolve(__dirname, "public"),
     filename: "main.bundle.js",
   },
   stats: {
