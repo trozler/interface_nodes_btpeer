@@ -1,6 +1,7 @@
 const express = require("express");
 const { join } = require("path");
 const morgan = require("morgan");
+const { spawn } = require("child_process");
 
 const app = express();
 
@@ -13,14 +14,31 @@ app.use(morgan("short"));
 
 app.post("/upload", function (req, res) {
   const encodedImage = req.body.image;
+  const email = req.body.email;
+  console.log("email:\n", email);
   console.log("encodedImage:\n", encodedImage);
 
-  // TODO: send encoded image.
+  sendTcpIpMessage(encodedImage, email);
 
   res.sendStatus(200);
 });
 
-// How to span a child process
-// https://stackoverflow.com/questions/13175510/call-python-function-from-javascript-code
+/**
+ *
+ * @description Will be called when we have received a new email and base64 encoded image.
+ * User also has to have paid for the service.
+ * @param {String} encodedImage
+ * @param {String} email
+ */
+function sendTcpIpMessage(encodedImage, email) {
+  // Send request to current domain at port 1119.
 
-app.listen(PORT, () => console.log("::Listening on port", PORT));
+  const sensor = spawn("python", ["sensor.py"]);
+  sensor.stdout.on("data", function (data) {
+    // convert Buffer object to Float
+
+    console.log(data);
+  });
+}
+
+app.listen(PORT, () => console.log("::listening on port", PORT));

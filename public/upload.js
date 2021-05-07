@@ -13,19 +13,22 @@ function mainEncoding() {
     const reader = new FileReader();
     reader.onloadend = async function () {
       console.log("encoded image:", reader.result);
-      await postData(reader.result);
+      console.log("email:", formElement["email"].value);
+
+      await postData(reader.result, formElement["email"].value);
+      window.location.reload();
     };
 
     reader.readAsDataURL(formElement["photo"].files[0]);
   }
 
-  async function postData(data) {
-    const response = await fetch("/upload", {
+  async function postData(data, email) {
+    await fetch("/upload", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ image: data }), // body data type must match "Content-Type" header
+      body: JSON.stringify({ image: data, email: email }), // body data type must match "Content-Type" header
     });
   }
 }
