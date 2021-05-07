@@ -1,9 +1,11 @@
 # Will accept encoding of image and also email
 # Will then create a BTPeerConnection and send message.
 import sys
+import os
 from btpeer import BTPeerConnection
 import socket
 import random
+import json
 
 
 def initserverhost():
@@ -51,30 +53,34 @@ def connectandsend(host, port, msgtype, msgdata, pid=None):
 
 
 def main():
-    if len(sys.argv) != 3:
-        print("not correct command line arguments.")
+    if os.path.exists(os.path.abspath("btpeer/tmp.json")) == False:
+        print("tmp.json doesn't exist")
         sys.exit(0)
+        return
 
-    email = sys.argv[1]
-    encodedImage = sys.argv[2]
+    with open('btpeer/tmp.json') as f:
+        data = json.load(f)
 
-    serverhost = initserverhost()
-    senderName = '%s:%d' % (serverhost, 3000)
+        email = data["email"]
+        encodedImage = data["encodedImage"]
 
-    print("senderName:", senderName)
-    print("email:", email)
-    print("encodedImage:", encodedImage)
+        serverhost = initserverhost()
+        senderName = '%s:%d' % (serverhost, 3000)
 
-    message_data = {
-        "sender": senderName,
-        "email": email,
-        "encodedImage": encodedImage,
-        "type": "INIT",
-        "id": random.randint(0, 100000),
-    }
+        print("senderName:", senderName)
+        print("email:", email)
+        print("encodedImage:", encodedImage)
 
-    connectandsend(serverhost, 1119, "INIT", sender,
-                   message_data, senderName)
+        message_data = {
+            "sender": senderName,
+            "email": email,
+            "encodedImage": encodedImage,
+            "type": "INIT",
+            "id": random.randint(0, 100000),
+        }
+
+        # connectandsend(serverhost, 1119, "INIT", sender,
+        #                message_data, senderName)
 
 
 if __name__ == "__main__":

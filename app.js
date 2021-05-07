@@ -1,7 +1,8 @@
 const express = require("express");
 const { join } = require("path");
 const morgan = require("morgan");
-const { spawn } = require("child_process");
+const { exec } = require("child_process");
+const fs = require("fs");
 
 const app = express();
 
@@ -15,8 +16,6 @@ app.use(morgan("short"));
 app.post("/upload", function (req, res) {
   const encodedImage = req.body.image;
   const email = req.body.email;
-  console.log("email:\n", email);
-  console.log("encodedImage:\n", encodedImage);
 
   sendTcpIpMessage(encodedImage, email);
 
@@ -31,13 +30,25 @@ app.post("/upload", function (req, res) {
  * @param {String} email
  */
 function sendTcpIpMessage(encodedImage, email) {
-  // Send request to current domain at port 1119.
+  const jsonData = JSON.stringify({ encodedImage: encodedImage, email: email });
 
-  const sensor = spawn("python", ["sensor.py"]);
-  sensor.stdout.on("data", function (data) {
-    // convert Buffer object to Float
+  // 1. Write to file.
+  fs.writeFile("btpeer/tmp.json", jsonData, function (err) {
+    if (err) {
+      return console.log(err);
+    }
+    console.log("Wrote to file");
+  });
 
-    console.log(data);
+  // 2. Send request to current domain at port 1119.
+
+  exec("python3 btpeer/btpeer_init_handler.py", function (err, stdout, stderr) {
+    if (err) {
+      console.error(`exec error: ${err}`);
+      return;
+    }
+
+    console.log(`stdout:\n ${stdout}`);
   });
 }
 
