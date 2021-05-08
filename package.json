@@ -7,8 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack || exit 1",
     "webpack-prod": "webpack --mode=production || exit 1",
-    "dev": "npm run webpack",
-    "build": "npm run webpack-prod"
+    "static": "cp -r public/ dist/",
+    "dev": "npm run static && npm run webpack",
+    "build": "npm run static && npm run webpack-prod"
   },
   "keywords": [],
   "author": "",

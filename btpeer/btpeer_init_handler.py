@@ -72,7 +72,7 @@ def main():
             "region": region,
         }
 
-        # connectandsend(serverhost, 1119, "INIT", sender,
+        # connectandsend(serverhost, 1119, "INIT",
         #                message_data, senderName)
 
 

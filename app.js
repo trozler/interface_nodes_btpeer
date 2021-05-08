@@ -8,7 +8,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(join(__dirname, "public")));
+app.use(express.static(join(__dirname, "dist")));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan("short"));
@@ -50,7 +50,7 @@ function sendTcpIpMessage(encodedImage, email, region) {
       return;
     }
 
-    console.log(`\nstdout:\n${stdout}`);
+    console.log(`\n::stdout:\n${stdout}`);
   });
 }
 
