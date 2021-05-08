@@ -3,7 +3,6 @@ const { join } = require("path");
 const morgan = require("morgan");
 const { exec } = require("child_process");
 const fs = require("fs");
-const validator = require("email-validator");
 
 const app = express();
 
@@ -27,11 +26,7 @@ app.post("/upload", function (req, res) {
   const region = req.body.region;
 
   if (region !== "ES" && region !== "IT" && region !== "GR") {
-    res.status(400).send("please choose a valid region.");
-  }
-
-  if (validator.validate("test@email.com") === false) {
-    res.status(400).send("please provide a valid email.");
+    return res.render("index", { error: "please choose a valid region." });
   }
 
   sendTcpIpMessage(encodedImage, email, region);

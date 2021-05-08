@@ -31,16 +31,16 @@
         <h3>imageX</h3>
         <ul>
           <li>Upload an image containing text in Italien, German or Spanish.</li>
-          <li>Pay with ether <img src="/images/ethereum.svg" alt="Ether" style="position: relative;top: 5px;">.</li>
+          <li>Pay with 0.001 <img src="/images/ethereum.svg" alt="Ether" style="position: relative;top: 5px;">.</li>
           <li>Have the image translated.</li>
         </ul>
         <form action="/upload" method="post" id="form-upload">
           <div class="form-element">
             <label for="email">email:</label>
-            <input type="email" name="email" style="width: 200px;">
+            <input required type="email" name="email" style="width: 200px;">
           </div>
           <div class="form-element">
-            <select name="region" id="region">
+            <select required name="region" id="region">
               <option value="">choose an option</option>
               <option value="IT">Italien</option>
               <option value="ES">Spanish</option>
@@ -48,16 +48,16 @@
             </select>
           </div>
           <div class="form-element">
-            <input type="file" name="photo">
+            <input required type="file" name="photo">
           </div>
           <div class="form-element">
             <input type="submit" style="margin-top: 10px;" id="submit-button" class="button primary top-pad"
               value="Submit">
           </div>
         </form>
-        <div>
-          <p id="trx-status"></p>
-        </div>
+        <% if(locals.error) { %>
+          <p style="color: red;"><%= locals.error %></p>
+          <% } %> 
       </div>
     </div>
   </main>

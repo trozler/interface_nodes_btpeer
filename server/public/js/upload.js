@@ -35,3 +35,5 @@ function mainEncoding() {
 }
 
 window.addEventListener("DOMContentLoaded", mainEncoding);
+
+// TODO: First submit transaction to metamask, then if approved send post message.
