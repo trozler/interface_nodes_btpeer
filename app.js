@@ -16,8 +16,9 @@ app.use(morgan("short"));
 app.post("/upload", function (req, res) {
   const encodedImage = req.body.image;
   const email = req.body.email;
+  const region = req.body.region;
 
-  sendTcpIpMessage(encodedImage, email);
+  sendTcpIpMessage(encodedImage, email, region);
 
   res.sendStatus(200);
 });
@@ -28,16 +29,17 @@ app.post("/upload", function (req, res) {
  * User also has to have paid for the service.
  * @param {String} encodedImage
  * @param {String} email
+ * @param {String} region
  */
-function sendTcpIpMessage(encodedImage, email) {
-  const jsonData = JSON.stringify({ encodedImage: encodedImage, email: email });
+function sendTcpIpMessage(encodedImage, email, region) {
+  const jsonData = JSON.stringify({ encodedImage: encodedImage, email: email, region: region });
 
   // 1. Write to file.
   fs.writeFile("btpeer/tmp.json", jsonData, function (err) {
     if (err) {
       return console.log(err);
     }
-    console.log("Wrote to file");
+    console.log("::wrote to file");
   });
 
   // 2. Send request to current domain at port 1119.

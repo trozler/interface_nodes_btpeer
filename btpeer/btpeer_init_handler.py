@@ -28,28 +28,18 @@ def connectandsend(host, port, msgtype, msgdata, pid=None):
     Connects and sends a message to the specified host:port. The host's
     reply, if expected, will be returned as a list of tuples.
     """
-    msgreply = []
+
     try:
         peerconn = BTPeerConnection(pid, host, port, debug=False)
         peerconn.senddata(msgtype, msgdata)
 
         print('Sent %s: %s' % (pid, msgtype))
 
-        if waitreply:
-            onereply = peerconn.recvdata()
-            while (onereply != (None, None)):
-                msgreply.append(onereply)
-                print('Got reply %s: %s'
-                      % (pid, str(msgreply)))
-                onereply = peerconn.recvdata()
-
         peerconn.close()
     except KeyboardInterrupt:
         raise
     except Exception as e:
-        traceback.print_exc()
-
-    return msgreply
+        raise
 
 
 def main():
@@ -63,12 +53,14 @@ def main():
 
         email = data["email"]
         encodedImage = data["encodedImage"]
+        region = data["region"]
 
         serverhost = initserverhost()
         senderName = '%s:%d' % (serverhost, 3000)
 
         print("senderName:", senderName)
         print("email:", email)
+        print("region:", region)
         print("encodedImage:", encodedImage)
 
         message_data = {
@@ -77,6 +69,7 @@ def main():
             "encodedImage": encodedImage,
             "type": "INIT",
             "id": random.randint(0, 100000),
+            "region": region,
         }
 
         # connectandsend(serverhost, 1119, "INIT", sender,
@@ -86,8 +79,12 @@ def main():
 if __name__ == "__main__":
     main()
 
-# const message = {
-#     encodedImage: encodedImage,
-#     type: "INIT",
-#     email: email,
-# }
+
+"""
+const message = {
+    encodedImage: encodedImage,
+    type: "INIT",
+    email: email,
+}
+
+"""

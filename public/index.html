@@ -14,8 +14,16 @@
   <div id="container">
     <form action="/upload" method="post" id="form-upload">
       <div class="form-element">
-        <label for="emai">email:</label>
+        <label for="email">email:</label>
         <input type="email" name="email" id="">
+      </div>
+      <div class="form-element">
+        <select name="region" id="region">
+          <option value="">--Please choose an option--</option>
+          <option value="IT">Italien</option>
+          <option value="ES">Spanish</option>
+          <option value="GR">German</option>
+        </select>
       </div>
       <div class="form-element">
         <input type="file" name="photo">
