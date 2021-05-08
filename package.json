@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
+    "email-validator": "^2.0.4",
     "ethers": "^5.1.4",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
