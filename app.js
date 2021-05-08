@@ -14,6 +14,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan("short"));
 
+app.set("view engine", "ejs");
+app.set("views", join(__dirname, "server/views/pages"));
+
+app.get("/", function (req, res) {
+  res.render("index", {});
+});
+
 app.post("/upload", function (req, res) {
   const encodedImage = req.body.image;
   const email = req.body.email;
