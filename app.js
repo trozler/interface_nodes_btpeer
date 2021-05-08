@@ -50,7 +50,7 @@ function sendTcpIpMessage(encodedImage, email, region) {
       return;
     }
 
-    console.log(`stdout:\n ${stdout}`);
+    console.log(`\nstdout:\n${stdout}`);
   });
 }
 

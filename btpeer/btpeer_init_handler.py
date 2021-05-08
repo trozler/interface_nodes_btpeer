@@ -78,13 +78,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-"""
-const message = {
-    encodedImage: encodedImage,
-    type: "INIT",
-    email: email,
-}
-
-"""
