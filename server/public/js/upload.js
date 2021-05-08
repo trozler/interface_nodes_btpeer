@@ -1,5 +1,5 @@
 function mainEncoding() {
-  const form = document.getElementById("form-upload");
+  const form = document.getElementById("pay-form");
 
   form.addEventListener("submit", function (evt) {
     evt.preventDefault();

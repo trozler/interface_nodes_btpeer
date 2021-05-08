@@ -16,7 +16,7 @@ class transationMaker {
   }
 
   setUpTransactions() {
-    this._trxForm = document.getElementById("donation-form") as HTMLFormElement;
+    this._trxForm = document.getElementById("pay-form") as HTMLFormElement;
 
     console.log("form element:", this._trxForm);
 
@@ -32,7 +32,7 @@ class transationMaker {
     // TODO: only allow test chain transactions.
     if (!this.isConected) {
       this._trxForm.hidden = true;
-      this._trxStatus.textContent = "Connect wallet to donate";
+      this._trxStatus.textContent = "Connect wallet to use service.";
     }
   }
 
@@ -184,24 +184,45 @@ class DApp {
 
     // TODO: Update this based on ethers discussion. SHould update UI components.
     // You may want to update have .on("accountsChanged"), in case you want to change account displayed.
-    // However will never use this to make a transaction.
-    // Event emitted if accounts change. Note that this event is emitted on page load.
-    // If the array of accounts is non-empty, you're already connected.
-    // this.externalProvider.on("accountsChanged", function (accounts: Array<string>) {
-    //   console.log(":::accountsChanged event fired.", accounts);
+  }
+}
 
-    //   if (accounts.length === 0) {
-    //     // MetaMask is locked or the user has not connected any accounts
-    //     return console.log(":::No account found or metamask locked.");
-    //   }
+// TODO: integrate mainEncoding, so called after trx made successfully.
+function mainEncoding() {
+  const form = document.getElementById("pay-form");
 
-    //   if (accounts[0] === this.currentAccount) {
-    //     return;
-    //   }
+  form.addEventListener("submit", function (evt) {
+    evt.preventDefault();
 
-    //   // Do any other work!
-    //   this.currentAccount = accounts[0];
-    // });
+    const form = evt.target as HTMLFormElement;
+
+    createBase64EncodedImage(form);
+
+    return false;
+  });
+
+  function createBase64EncodedImage(formElement: HTMLFormElement) {
+    const reader = new FileReader();
+    reader.onloadend = async function () {
+      console.log("encoded image:", reader.result);
+      console.log("email:", formElement["email"].value);
+      console.log("region:", formElement["region"].value);
+
+      await postData(reader.result, formElement["email"].value, formElement["region"].value);
+      window.location.reload();
+    };
+
+    reader.readAsDataURL(formElement["photo"].files[0]);
+  }
+
+  async function postData(data: string | ArrayBuffer, email: string, region: string) {
+    await fetch("/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ image: data, email: email, region: region }), // body data type must match "Content-Type" header
+    });
   }
 }
 
@@ -224,8 +245,3 @@ window.addEventListener("DOMContentLoaded", async function () {
 
   new DApp(ethereum, isConected);
 });
-
-/*
-  TODO:
-  * Need to ask user to download metamask if not installed.
-*/

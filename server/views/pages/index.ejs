@@ -17,6 +17,10 @@
       content: "✔️";
       margin: 0 16px 0 0;
     }
+
+    #trx-status{
+      font-weight: 560;
+    }
   </style>
   <title>imageX</title>
 </head>
@@ -34,7 +38,7 @@
           <li>Pay with 0.001 <img src="/images/ethereum.svg" alt="Ether" style="position: relative;top: 5px;">.</li>
           <li>Have the image translated.</li>
         </ul>
-        <form action="/upload" method="post" id="form-upload">
+        <form action="/upload" method="post" id="pay-form">
           <div class="form-element">
             <label for="email">email:</label>
             <input required type="email" name="email" style="width: 200px;">
@@ -58,6 +62,9 @@
         <% if(locals.error) { %>
           <p style="color: red;"><%= locals.error %></p>
           <% } %> 
+        <div>
+          <p id="trx-status"></p>
+        </div>
       </div>
     </div>
   </main>
