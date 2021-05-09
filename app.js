@@ -25,7 +25,7 @@ app.post("/upload", function (req, res) {
   const email = req.body.email;
   const region = req.body.region;
 
-  if (region !== "ES" && region !== "IT" && region !== "GR") {
+  if (region !== "ES" && region !== "IT" && region !== "GR" && region !== "FR") {
     return res.render("index", { error: "please choose a valid region." });
   }
 
