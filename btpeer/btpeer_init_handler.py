@@ -63,6 +63,9 @@ def main():
         print("region:", region)
         print("encodedImage:", encodedImage)
 
+        encodedImage = encodedImage.split(";base64,")[1]
+        print("\n\n new encodedImage:", encodedImage)
+
         message_data = {
             "sender": senderName,
             "email": email,
