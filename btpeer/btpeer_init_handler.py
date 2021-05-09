@@ -72,8 +72,8 @@ def main():
             "region": region,
         }
 
-        # connectandsend(serverhost, 1119, "INIT",
-        #                message_data, senderName)
+        connectandsend(serverhost, 1119, "INIT",
+                       message_data, senderName)
 
 
 if __name__ == "__main__":
