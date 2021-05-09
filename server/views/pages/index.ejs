@@ -36,7 +36,7 @@
         <ul>
           <li>Upload an image containing text in Italien, German or Spanish.</li>
           <li>Pay with 0.001 <img src="/images/ethereum.svg" alt="Ether" style="position: relative;top: 5px;">.</li>
-          <li>Have the image translated.</li>
+          <li>Upload the image and have the result emailed to you.</li>
         </ul>
         <form action="/upload" method="post" id="pay-form">
           <div class="form-element">
@@ -44,6 +44,7 @@
             <input required type="email" name="email" style="width: 200px;">
           </div>
           <div class="form-element">
+            <label for="region">language:</label>
             <select required name="region" id="region">
               <option value="">choose an option</option>
               <option value="IT">Italien</option>

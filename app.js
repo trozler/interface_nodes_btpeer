@@ -31,7 +31,7 @@ app.post("/upload", function (req, res) {
 
   sendTcpIpMessage(encodedImage, email, region);
 
-  res.sendStatus(200);
+  res.render("index", { trxStatus: "Payment succeeded" });
 });
 
 /**

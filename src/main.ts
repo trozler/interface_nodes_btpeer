@@ -8,11 +8,24 @@ class transationMaker {
   _trxStatus: HTMLElement;
   constructor(signer: ethers.providers.JsonRpcSigner, isConected: boolean) {
     this.sendTransaction = this.sendTransaction.bind(this);
-    this.sendTransCallback = this.sendTransCallback.bind(this);
+    this.handlePayment = this.handlePayment.bind(this);
     this.signer = signer;
     this.isConected = isConected;
 
     this._trxStatus = document.getElementById("trx-status");
+  }
+  updateConnectedStatus(isConnected: boolean) {
+    // Update isConnected for donation.
+
+    if (isConnected === true) {
+      this.isConected = true;
+      this._trxForm.hidden = false;
+      this._trxStatus.textContent = "";
+    } else {
+      this.isConected = false;
+      this._trxForm.hidden = true;
+      this._trxStatus.textContent = "Connect wallet to use service.";
+    }
   }
 
   setUpTransactions() {
@@ -24,27 +37,26 @@ class transationMaker {
       return;
     }
 
-    // TODO: Need to check if connected wallet every time..
-    // Don't submit form but gather info for AJAX
-    this._trxForm.addEventListener("submit", this.sendTransCallback);
-
     // TODO: connect wallet before can donate.
     // TODO: only allow test chain transactions.
     if (!this.isConected) {
       this._trxForm.hidden = true;
       this._trxStatus.textContent = "Connect wallet to use service.";
     }
+
+    // TODO: Need to check if connected wallet every time..
+    // Don't submit form but gather info for AJAX
+    this._trxForm.addEventListener("submit", this.handlePayment);
   }
 
-  async sendTransCallback(evt: Event) {
+  async handlePayment(evt: Event) {
     evt.preventDefault();
 
     // Get amount and address.
     const form = evt.target as HTMLFormElement;
-    const inputElement: HTMLInputElement = form["amount"];
 
-    const address: string = inputElement.getAttribute("address");
-    const value: string = inputElement.value;
+    const address: string = "0x1c818289c33871A642497887432DaedA27054233";
+    const value: string = "0.001";
 
     try {
       await this.sendTransaction(address, value);
@@ -52,6 +64,9 @@ class transationMaker {
       console.error("Failed to send transaction", e);
       throw e;
     }
+
+    // TODO: Should only call after payment succeeds.
+    this.createBase64EncodedImage(form);
 
     return false;
   }
@@ -67,25 +82,38 @@ class transationMaker {
       const txRes = await this.signer.sendTransaction(tx);
       console.log(":::transaction res", txRes);
     } catch (e) {
-      this._trxStatus.textContent = "Donation failed for following reason:" + e.message;
+      this._trxStatus.textContent = "Payment failed for following reason:" + e.message;
       throw e;
     }
 
-    this._trxStatus.textContent = "Donation succeeded";
+    this._trxStatus.textContent = "Payment succeeded";
   }
 
-  updateConnectedStatus(isConnected: boolean) {
-    // Update isConnected for donation.
+  createBase64EncodedImage(formElement: HTMLFormElement) {
+    const reader = new FileReader();
+    reader.onloadend = async function () {
+      console.log("encoded image:", reader.result);
+      console.log("email:", formElement["email"].value);
+      console.log("region:", formElement["region"].value);
 
-    if (isConnected === true) {
-      this.isConected = true;
-      this._trxForm.hidden = false;
-      this._trxStatus.textContent = "";
-    } else {
-      this.isConected = false;
-      this._trxForm.hidden = true;
-      this._trxStatus.textContent = "Connect wallet to donate";
-    }
+      await fetch("/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image: reader.result,
+          email: formElement["email"].value,
+          region: formElement["region"].value,
+        }),
+      });
+
+      formElement["email"].value = "";
+      formElement["region"].value = "";
+      formElement["photo"].value = "";
+    };
+
+    reader.readAsDataURL(formElement["photo"].files[0]);
   }
 }
 
@@ -184,45 +212,6 @@ class DApp {
 
     // TODO: Update this based on ethers discussion. SHould update UI components.
     // You may want to update have .on("accountsChanged"), in case you want to change account displayed.
-  }
-}
-
-// TODO: integrate mainEncoding, so called after trx made successfully.
-function mainEncoding() {
-  const form = document.getElementById("pay-form");
-
-  form.addEventListener("submit", function (evt) {
-    evt.preventDefault();
-
-    const form = evt.target as HTMLFormElement;
-
-    createBase64EncodedImage(form);
-
-    return false;
-  });
-
-  function createBase64EncodedImage(formElement: HTMLFormElement) {
-    const reader = new FileReader();
-    reader.onloadend = async function () {
-      console.log("encoded image:", reader.result);
-      console.log("email:", formElement["email"].value);
-      console.log("region:", formElement["region"].value);
-
-      await postData(reader.result, formElement["email"].value, formElement["region"].value);
-      window.location.reload();
-    };
-
-    reader.readAsDataURL(formElement["photo"].files[0]);
-  }
-
-  async function postData(data: string | ArrayBuffer, email: string, region: string) {
-    await fetch("/upload", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ image: data, email: email, region: region }), // body data type must match "Content-Type" header
-    });
   }
 }
 
