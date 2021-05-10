@@ -8,6 +8,7 @@ import random
 import json
 import base64
 
+# Set to true to see base64 of image.
 DEBUG = False
 
 
@@ -73,10 +74,9 @@ def main():
         serverhost = initserverhost()
         senderName = '%s:%d' % (serverhost, 3000)
 
-        if DEBUG:
-            print("senderName:", senderName)
-            print("email:", email)
-            print("region:", region)
+        print("senderName:", senderName)
+        print("email:", email)
+        print("region:", region)
 
         message_data = {
             "sender": senderName,
@@ -87,8 +87,8 @@ def main():
             "region": region,
         }
 
-        # connectandsend(serverhost, 1119, "INIT",
-        #                json.dumps(message_data), senderName)
+        connectandsend(serverhost, 1119, "INIT",
+                       json.dumps(message_data), senderName)
 
 
 if __name__ == "__main__":
