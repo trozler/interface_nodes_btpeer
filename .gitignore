@@ -11,3 +11,5 @@ artifacts
 artifacts/
 coverage/
 __pycache__
+tmpData.json
+tmpImage

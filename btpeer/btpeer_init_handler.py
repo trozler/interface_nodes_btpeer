@@ -6,6 +6,9 @@ from btpeer import BTPeerConnection
 import socket
 import random
 import json
+import base64
+
+DEBUG = False
 
 
 def initserverhost():
@@ -43,28 +46,37 @@ def connectandsend(host, port, msgtype, msgdata, pid=None):
 
 
 def main():
-    if os.path.exists(os.path.abspath("btpeer/tmp.json")) == False:
-        print("tmp.json doesn't exist")
+    if os.path.exists(os.path.abspath("btpeer/tmpData.json")) == False:
+        print("tmpData.json doesn't exist")
         sys.exit(0)
         return
 
-    with open('btpeer/tmp.json') as f:
+    if os.path.exists(os.path.abspath("btpeer/tmpImage")) == False:
+        print("tmpImage doesn't exist")
+        sys.exit(0)
+        return
+
+    encodedImage = None
+    with open(os.path.abspath("btpeer/tmpImage"), "rb") as binaryImage:
+        image_read = binaryImage.read()
+        encodedImage = base64.encodebytes(image_read).decode("utf-8")
+
+        if DEBUG:
+            print("encodedImage:", encodedImage)
+
+    with open(os.path.abspath("btpeer/tmpData.json")) as f:
         data = json.load(f)
 
         email = data["email"]
-        encodedImage = data["encodedImage"]
         region = data["region"]
 
         serverhost = initserverhost()
         senderName = '%s:%d' % (serverhost, 3000)
 
-        print("senderName:", senderName)
-        print("email:", email)
-        print("region:", region)
-        print("encodedImage:", encodedImage)
-
-        encodedImage = encodedImage.split(";base64,")[1]
-        print("\n\n new encodedImage:", encodedImage)
+        if DEBUG:
+            print("senderName:", senderName)
+            print("email:", email)
+            print("region:", region)
 
         message_data = {
             "sender": senderName,
@@ -75,8 +87,8 @@ def main():
             "region": region,
         }
 
-        connectandsend(serverhost, 1119, "INIT",
-                       json.dumps(message_data), senderName)
+        # connectandsend(serverhost, 1119, "INIT",
+        #                json.dumps(message_data), senderName)
 
 
 if __name__ == "__main__":

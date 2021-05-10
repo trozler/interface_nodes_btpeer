@@ -65,8 +65,7 @@ class transationMaker {
       throw e;
     }
 
-    // TODO: Should only call after payment succeeds.
-    this.createBase64EncodedImage(form);
+    form.submit();
 
     return false;
   }
@@ -87,33 +86,6 @@ class transationMaker {
     }
 
     this._trxStatus.textContent = "Payment succeeded";
-  }
-
-  createBase64EncodedImage(formElement: HTMLFormElement) {
-    const reader = new FileReader();
-    reader.onloadend = async function () {
-      console.log("encoded image:", reader.result);
-      console.log("email:", formElement["email"].value);
-      console.log("region:", formElement["region"].value);
-
-      await fetch("/upload", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          image: reader.result,
-          email: formElement["email"].value,
-          region: formElement["region"].value,
-        }),
-      });
-
-      formElement["email"].value = "";
-      formElement["region"].value = "";
-      formElement["photo"].value = "";
-    };
-
-    reader.readAsDataURL(formElement["photo"].files[0]);
   }
 }
 
