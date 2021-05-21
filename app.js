@@ -1,13 +1,11 @@
 const express = require("express");
 const morgan = require("morgan");
 const multer = require("multer");
-const { join, resolve } = require("path");
+const { join } = require("path");
 const { exec } = require("child_process");
 const fs = require("fs");
 
 const ethers = require("ethers");
-
-require("dotenv").config({ path: resolve(__dirname, "./example.env") });
 
 // Start time should be stored in html and sent with return time.
 

@@ -16,7 +16,6 @@
   "license": "ISC",
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
-    "dotenv": "^9.0.2",
     "ejs": "^3.1.6",
     "ethers": "^5.1.4",
     "express": "^4.17.1",
