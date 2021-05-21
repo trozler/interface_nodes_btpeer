@@ -60,6 +60,7 @@
             <input type="submit" style="margin-top: 10px;" id="submit-button" class="button primary top-pad"
               value="Submit">
           </div>
+          <input name="start" type="hidden" value="<%= locals.start %>">
         </form>
         <% if(locals.error) { %>
           <p style="color: red;"><%= locals.error %></p>

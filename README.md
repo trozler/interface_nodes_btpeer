@@ -14,3 +14,13 @@ npm i
 npm run build
 node app.js
 ```
+
+### Ethereum logging and ether scanner
+
+We use a smart contract to log successful transaction. The smart contract can be found here: [trozler/logging_contract_image_translator](https://github.com/trozler/logging_contract_image_translator)
+
+If you want to inspect the logs on ether scanner you can do the following:
+
+1. Wait for callback to be executed server side, indicating transaction has been mined. Use server logs to keep updated.
+
+2. Go to the following etherscanner link and inspect the logs: https://ropsten.etherscan.io/address/0xa09a8dA457e5282BD9D018A9BeA6e5Ac65aBB466.

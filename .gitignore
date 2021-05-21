@@ -1,7 +1,7 @@
 .vscode/
 .DS_Store
 node_modules/
-/*.env
+
 build
 /target
 cache
@@ -13,3 +13,4 @@ coverage/
 __pycache__
 tmpData.json
 tmpImage
+testDir
